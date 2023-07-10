@@ -1,11 +1,16 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Step {
 
     @Id
@@ -14,8 +19,11 @@ public class Step {
     private Short number;
     private String description;
 
-    public Step(){
+    @ManyToOne
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
 
+    public Step() {
     }
 
     public Long getId() {
@@ -40,5 +48,13 @@ public class Step {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }

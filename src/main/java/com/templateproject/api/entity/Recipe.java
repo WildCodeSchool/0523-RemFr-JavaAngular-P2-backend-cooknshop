@@ -1,17 +1,30 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Recipe {
 
     public enum Budget {
         CHEAP,
         MODERATE,
         EXPENSIVE
+    }
+
+    public enum Difficulty {
+        EASY,
+        MODERATE,
+        HARD
     }
 
     @Id
@@ -21,20 +34,24 @@ public class Recipe {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    public enum Difficulty {
-        EASY,
-        MODERATE,
-        HARD
-    }
-
     @Enumerated(EnumType.STRING)
     private Budget budget;
     private Short prepTime;
     private Short cookTime;
     private String imageLink;
 
-    public Recipe(){
+    @ManyToMany
+    @JoinTable(
+            name = "recipe_categories",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<Category> categoryRecipes;
 
+    @OneToMany(mappedBy = "recipe")
+    private List<Step> stepList = new ArrayList<>();
+
+    public Recipe() {
     }
 
     public Long getId() {
@@ -91,5 +108,21 @@ public class Recipe {
 
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
+    }
+
+    public Set<Category> getCategoryRecipes() {
+        return categoryRecipes;
+    }
+
+    public void setCategoryRecipes(Set<Category> categoryRecipes) {
+        this.categoryRecipes = categoryRecipes;
+    }
+
+    public List<Step> getStepList() {
+        return stepList;
+    }
+
+    public void setStepList(List<Step> stepList) {
+        this.stepList = stepList;
     }
 }
