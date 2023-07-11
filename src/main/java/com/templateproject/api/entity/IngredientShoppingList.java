@@ -2,23 +2,25 @@ package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
-
-
-import java.util.Date;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class Cart {
+public class IngredientShoppingList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date creationDate;
 
-    public Cart() {}
+    private Float quantity;
+
+    public IngredientShoppingList() {
+    }
 
     public Long getId() {
         return id;
@@ -28,11 +30,11 @@ public class Cart {
         this.id = id;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public Float getQuantity() {
+        return quantity;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setQuantity(Float quantity) {
+        this.quantity = quantity;
     }
 }
