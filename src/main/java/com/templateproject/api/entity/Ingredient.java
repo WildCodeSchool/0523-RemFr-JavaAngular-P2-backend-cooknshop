@@ -15,10 +15,10 @@ public class Ingredient {
     private String name;
     private String imageLink;
 
-    @OneToMany(mappedBy = "shoppingListIngredient")
+    @OneToMany(mappedBy = "ingredient")
     private List<IngredientShoppingList> ingredientToShopList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "ingredient")
+    @OneToMany(mappedBy = "recipeIngredient")
     private List<RecipeIngredient> ingredientList = new ArrayList<>();
 
     public Ingredient(){

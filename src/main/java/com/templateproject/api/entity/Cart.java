@@ -25,7 +25,7 @@ public class Cart {
     private User user;
 
     @OneToMany(mappedBy = "recipeCart")
-    private List<Recipe> recipeList = new ArrayList<>();
+    private List<RecipeCart> recipeList = new ArrayList<>();
 
     public Cart() {}
 
@@ -53,11 +53,11 @@ public class Cart {
         this.user = user;
     }
 
-    public List<Recipe> getRecipeList() {
+    public List<RecipeCart> getRecipeList() {
         return recipeList;
     }
 
-    public void setRecipeList(List<Recipe> recipeList) {
+    public void setRecipeList(List<RecipeCart> recipeList) {
         this.recipeList = recipeList;
     }
 }
