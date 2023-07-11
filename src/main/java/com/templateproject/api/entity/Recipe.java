@@ -52,10 +52,23 @@ public class Recipe {
     private Set<Category> categoryRecipes;
 
     @OneToMany(mappedBy = "recipe")
+    private Set<Comment> recipeComment = new HashSet<>();
+
+    @OneToMany(mappedBy = "recipe")
+    private Set<RecipeCart> recipeCart = new HashSet<>();
+
+    @OneToMany(mappedBy = "recipe")
+    private Set<RecipeIngredient> recipeIngredient = new HashSet<>();
+
+    @OneToMany(mappedBy = "recipe")
     private List<Step> stepList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "favoriteRecipes")
     Set<User> usersWhoLikeRecipe  = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Recipe() {
     }
@@ -138,5 +151,37 @@ public class Recipe {
 
     public void setUsersWhoLikeRecipe(Set<User> usersWhoLikeRecipe) {
         this.usersWhoLikeRecipe = usersWhoLikeRecipe;
+    }
+
+    public Set<RecipeIngredient> getRecipeIngredient() {
+        return recipeIngredient;
+    }
+
+    public void setRecipeIngredient(Set<RecipeIngredient> recipeIngredient) {
+        this.recipeIngredient = recipeIngredient;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Comment> getRecipeComment() {
+        return recipeComment;
+    }
+
+    public void setRecipeComment(Set<Comment> recipeComment) {
+        this.recipeComment = recipeComment;
+    }
+
+    public Set<RecipeCart> getRecipeCart() {
+        return recipeCart;
+    }
+
+    public void setRecipeCart(Set<RecipeCart> recipeCart) {
+        this.recipeCart = recipeCart;
     }
 }

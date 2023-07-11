@@ -26,7 +26,7 @@ public class IngredientShoppingList {
 
     @ManyToOne
     @JoinColumn(name = "shopping_list_id")
-    private ShoppingList shoppingList;
+    private ShoppingList shoppingListIngredient;
 
     public IngredientShoppingList() {
     }
@@ -64,10 +64,10 @@ public class IngredientShoppingList {
     }
 
     public ShoppingList getShoppingList() {
-        return shoppingList;
+        return shoppingListIngredient;
     }
 
     public void setShoppingList(ShoppingList shoppingList) {
-        this.shoppingList = shoppingList;
+        this.shoppingListIngredient = shoppingList;
     }
 }

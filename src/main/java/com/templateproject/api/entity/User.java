@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,6 +30,17 @@ public class User {
     )
     private Set<Recipe> favoriteRecipes;
 
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
+    @OneToOne(mappedBy = "user")
+    private ShoppingList shoppingList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comment = new ArrayList<>() ;
+
+    @OneToMany(mappedBy = "user")
+    private List<Recipe> recipeList = new ArrayList<>();
 
     public User() {
     }
@@ -70,5 +83,37 @@ public class User {
 
     public void setFavoriteRecipes(Set<Recipe> favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
+    }
+
+    public List<Recipe> getRecipeList() {
+        return recipeList;
+    }
+
+    public void setRecipeList(List<Recipe> recipeList) {
+        this.recipeList = recipeList;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public ShoppingList getShoppingList() {
+        return shoppingList;
+    }
+
+    public void setShoppingList(ShoppingList shoppingList) {
+        this.shoppingList = shoppingList;
+    }
+
+    public List<Comment> getComment() {
+        return comment;
+    }
+
+    public void setComment(List<Comment> comment) {
+        this.comment = comment;
     }
 }

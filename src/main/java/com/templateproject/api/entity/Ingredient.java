@@ -3,6 +3,7 @@ package com.templateproject.api.entity;
 import jakarta.persistence.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,6 +14,12 @@ public class Ingredient {
     private Long id;
     private String name;
     private String imageLink;
+
+    @OneToMany(mappedBy = "shoppingListIngredient")
+    private List<IngredientShoppingList> ingredientToShopList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "ingredient")
+    private List<RecipeIngredient> ingredientList = new ArrayList<>();
 
     public Ingredient(){
 
@@ -40,5 +47,21 @@ public class Ingredient {
 
     public void setImageLink(String imageLink) {
         this.imageLink = imageLink;
+    }
+
+    public List<IngredientShoppingList> getIngredientToShopList() {
+        return ingredientToShopList;
+    }
+
+    public void setIngredientToShopList(List<IngredientShoppingList> ingredientToShopList) {
+        this.ingredientToShopList = ingredientToShopList;
+    }
+
+    public List<RecipeIngredient> getIngredientList() {
+        return ingredientList;
+    }
+
+    public void setIngredientList(List<RecipeIngredient> ingredientList) {
+        this.ingredientList = ingredientList;
     }
 }

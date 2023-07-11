@@ -21,13 +21,13 @@ public class RecipeIngredient {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "unit_id")
     private Unit unit;
 
     @ManyToOne
     @JoinColumn(name = "ingredient_id")
-    private Ingredient ingredient;
+    private Ingredient recipeIngredient;
 
     public RecipeIngredient() {
     }
@@ -65,10 +65,10 @@ public class RecipeIngredient {
     }
 
     public Ingredient getIngredient() {
-        return ingredient;
+        return recipeIngredient;
     }
 
     public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
+        this.recipeIngredient = ingredient;
     }
 }

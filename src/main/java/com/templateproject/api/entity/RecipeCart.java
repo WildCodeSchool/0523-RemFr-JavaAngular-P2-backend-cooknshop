@@ -2,10 +2,7 @@ package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 @JsonIdentityInfo(
@@ -19,9 +16,16 @@ public class RecipeCart {
 
     private Integer nbPerson;
 
+    @ManyToOne
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    private Cart recipeCart;
+
     public RecipeCart() {
     }
-
     public Long getId() {
         return id;
     }
@@ -36,5 +40,21 @@ public class RecipeCart {
 
     public void setNbPerson(Integer nbPerson) {
         this.nbPerson = nbPerson;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public Cart getRecipeCart() {
+        return recipeCart;
+    }
+
+    public void setRecipeCart(Cart recipeCart) {
+        this.recipeCart = recipeCart;
     }
 }

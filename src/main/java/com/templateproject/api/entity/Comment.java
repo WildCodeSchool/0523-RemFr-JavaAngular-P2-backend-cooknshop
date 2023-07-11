@@ -19,6 +19,14 @@ public class Comment {
     private String content;
     private Float rating;
 
+    @ManyToOne
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Comment() {
     }
 
@@ -44,5 +52,21 @@ public class Comment {
 
     public void setRating(Float rating) {
         this.rating = rating;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
