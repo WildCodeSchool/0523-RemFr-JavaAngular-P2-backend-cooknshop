@@ -20,17 +20,17 @@ public class User {
     private String email;
     private String password;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "favorite_recipe",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private Set<Recipe> favoriteRecipes;
+
 
     public User() {
     }
-
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "favorite",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "recipe_id") }
-    )
-    Set<Recipe> recipesByCategory = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -62,5 +62,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Recipe> getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
+
+    public void setFavoriteRecipes(Set<Recipe> favoriteRecipes) {
+        this.favoriteRecipes = favoriteRecipes;
     }
 }

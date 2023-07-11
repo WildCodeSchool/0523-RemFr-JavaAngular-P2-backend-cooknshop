@@ -45,7 +45,7 @@ public class Recipe {
 
     @ManyToMany
     @JoinTable(
-            name = "recipe_categories",
+            name = "recipe_categorie",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
@@ -54,8 +54,8 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private List<Step> stepList = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "favorite")
-    Set<User> recipesByUser  = new HashSet<>();
+    @ManyToMany(mappedBy = "favoriteRecipes")
+    Set<User> usersWhoLikeRecipe  = new HashSet<>();
 
     public Recipe() {
     }
@@ -132,11 +132,11 @@ public class Recipe {
         this.stepList = stepList;
     }
 
-    public Set<User> getRecipesByUser() {
-        return recipesByUser;
+    public Set<User> getUsersWhoLikeRecipe() {
+        return usersWhoLikeRecipe;
     }
 
-    public void setRecipesByUser(Set<User> recipesByUser) {
-        this.recipesByUser = recipesByUser;
+    public void setUsersWhoLikeRecipe(Set<User> usersWhoLikeRecipe) {
+        this.usersWhoLikeRecipe = usersWhoLikeRecipe;
     }
 }
