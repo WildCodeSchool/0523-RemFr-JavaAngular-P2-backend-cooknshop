@@ -17,6 +17,7 @@ public class Step {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Short number;
+    @Lob
     private String description;
 
     @ManyToOne

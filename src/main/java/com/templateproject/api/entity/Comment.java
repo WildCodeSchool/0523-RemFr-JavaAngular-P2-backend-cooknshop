@@ -4,29 +4,22 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
-
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class Category {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-
     private Long id;
-    private String name;
+    private String content;
+    private Float rating;
 
-    @ManyToMany(mappedBy = "categoryRecipes")
-    Set<Recipe> recipesByCategory = new HashSet<>();
-
-    public Category() {
+    public Comment() {
     }
 
     public Long getId() {
@@ -37,19 +30,19 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getContent() {
+        return content;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public Set<Recipe> getRecipesByCategory() {
-        return recipesByCategory;
+    public Float getRating() {
+        return rating;
     }
 
-    public void setRecipesByCategory(Set<Recipe> recipesByCategory) {
-        this.recipesByCategory = recipesByCategory;
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
 }

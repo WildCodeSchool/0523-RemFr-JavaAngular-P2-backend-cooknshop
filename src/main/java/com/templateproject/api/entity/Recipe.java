@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +30,8 @@ public class Recipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "recipe_id")
+
     private Long id;
     private String title;
     @Enumerated(EnumType.STRING)
@@ -50,6 +53,9 @@ public class Recipe {
 
     @OneToMany(mappedBy = "recipe")
     private List<Step> stepList = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "favorite")
+    Set<User> recipesByUser  = new HashSet<>();
 
     public Recipe() {
     }
@@ -124,5 +130,13 @@ public class Recipe {
 
     public void setStepList(List<Step> stepList) {
         this.stepList = stepList;
+    }
+
+    public Set<User> getRecipesByUser() {
+        return recipesByUser;
+    }
+
+    public void setRecipesByUser(Set<User> recipesByUser) {
+        this.recipesByUser = recipesByUser;
     }
 }

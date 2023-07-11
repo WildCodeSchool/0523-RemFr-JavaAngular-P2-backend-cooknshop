@@ -8,27 +8,28 @@ import jakarta.persistence.*;
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
         property = "id")
-public class IngredientShoppingList {
+public class RecipeIngredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
     private Float quantity;
 
     @ManyToOne
-    @JoinColumn(name = "ingredient_id")
-    private Ingredient ingredient;
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
 
     @ManyToOne()
     @JoinColumn(name = "unit_id")
     private Unit unit;
 
     @ManyToOne
-    @JoinColumn(name = "shopping_list_id")
-    private ShoppingList shoppingList;
+    @JoinColumn(name = "ingredient_id")
+    private Ingredient ingredient;
 
-    public IngredientShoppingList() {
+    public RecipeIngredient() {
     }
 
     public Long getId() {
@@ -47,6 +48,14 @@ public class IngredientShoppingList {
         this.quantity = quantity;
     }
 
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
     public Unit getUnit() {
         return unit;
     }
@@ -61,13 +70,5 @@ public class IngredientShoppingList {
 
     public void setIngredient(Ingredient ingredient) {
         this.ingredient = ingredient;
-    }
-
-    public ShoppingList getShoppingList() {
-        return shoppingList;
-    }
-
-    public void setShoppingList(ShoppingList shoppingList) {
-        this.shoppingList = shoppingList;
     }
 }
