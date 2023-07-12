@@ -1,5 +1,7 @@
 package com.templateproject.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 
@@ -7,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Ingredient {
 
     @Id
