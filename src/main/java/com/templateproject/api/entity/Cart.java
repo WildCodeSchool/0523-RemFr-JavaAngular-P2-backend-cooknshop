@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -37,11 +38,11 @@ public class Cart {
         this.id = id;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

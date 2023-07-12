@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ public class ShoppingList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     private Boolean shared;
 
@@ -39,11 +40,11 @@ public class ShoppingList {
         this.id = id;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

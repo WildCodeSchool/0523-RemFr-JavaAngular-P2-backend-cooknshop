@@ -23,7 +23,6 @@ public class RecipeController {
     }
 
     @GetMapping("/recipes/{id}")
-    @ResponseBody
     public Recipe getRecipe(@PathVariable Long id){
         return this.recipeRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
