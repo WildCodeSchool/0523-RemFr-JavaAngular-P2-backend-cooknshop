@@ -31,9 +31,25 @@ public class UnitController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/name/{nameValue}")
+    public Unit getByName(@PathVariable("nameValue") String name){
+        return this.unitRepository.findUnitByName(name)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/name/containing/{nameValue}")
+    public List<Unit> getByNameContaining(@PathVariable("nameValue") String name){
+        return this.unitRepository.findUnitsByNameContaining(name);
+    }
+
     @PostMapping("")
     public Unit create(@RequestBody Unit newUnit) {
         return this.unitRepository.save(newUnit);
+    }
+
+    @PostMapping("/search")
+    public List<Unit> search(@RequestParam String name) {
+        return this.unitRepository.findByNameContaining(name);
     }
 
     @PutMapping("/{id}")

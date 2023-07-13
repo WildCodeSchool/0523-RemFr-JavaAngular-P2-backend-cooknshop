@@ -1,6 +1,7 @@
 package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.Category;
+import com.templateproject.api.entity.Category;
 import com.templateproject.api.repository.CategoryRepository;
 import com.templateproject.api.utils.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,17 @@ public class CategoryController {
     public Category getById(@PathVariable Long id){
         return this.categoryRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/name/{nameValue}")
+    public Category getByName(@PathVariable("nameValue") String name){
+        return this.categoryRepository.findCategoryByName(name)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/name/containing/{nameValue}")
+    public List<Category> getByNameContaining(@PathVariable("nameValue") String name){
+        return this.categoryRepository.findCategoriesByNameContaining(name);
     }
 
     @PostMapping("")
