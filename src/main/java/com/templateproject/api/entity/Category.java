@@ -1,13 +1,12 @@
 package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,7 +22,8 @@ public class Category {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "categoryRecipes")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(mappedBy = "recipeCategories")
     Set<Recipe> recipesByCategory = new HashSet<>();
 
     public Category() {

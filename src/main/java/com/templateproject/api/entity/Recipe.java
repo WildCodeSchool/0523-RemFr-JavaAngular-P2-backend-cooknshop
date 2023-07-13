@@ -45,11 +45,11 @@ public class Recipe {
 
     @ManyToMany
     @JoinTable(
-            name = "recipe_categorie",
+            name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categoryRecipes;
+    private Set<Category> recipeCategories;
 
     @OneToMany(mappedBy = "recipe")
     private Set<Comment> recipeComment = new HashSet<>();
@@ -129,12 +129,12 @@ public class Recipe {
         this.imageLink = imageLink;
     }
 
-    public Set<Category> getCategoryRecipes() {
-        return categoryRecipes;
+    public Set<Category> getRecipeCategories() {
+        return recipeCategories;
     }
 
-    public void setCategoryRecipes(Set<Category> categoryRecipes) {
-        this.categoryRecipes = categoryRecipes;
+    public void setRecipeCategories(Set<Category> recipeCategories) {
+        this.recipeCategories = recipeCategories;
     }
 
     public List<Step> getStepList() {
