@@ -54,13 +54,13 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private Set<Comment> recipeComment = new HashSet<>();
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private Set<RecipeCart> recipeCart = new HashSet<>();
 
     @OneToMany(mappedBy = "recipe")
     private Set<RecipeIngredient> recipeIngredient = new HashSet<>();
 
-    @OneToMany(mappedBy = "recipe")
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Step> stepList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "favoriteRecipes")
