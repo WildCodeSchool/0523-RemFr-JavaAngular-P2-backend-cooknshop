@@ -10,9 +10,7 @@ import java.util.Optional;
 @Repository
 public interface UnitRepository extends JpaRepository<Unit, Long> {
 
-    Optional<Unit> findUnitByName(String name);
-
-    List<Unit> findUnitsByNameContaining(String name);
+    Optional<Unit> findByName(String name);
 
     List<Unit> findByNameContaining(String name);
 }

@@ -34,13 +34,13 @@ public class CategoryController {
 
     @GetMapping("/name/{nameValue}")
     public Category getByName(@PathVariable("nameValue") String name){
-        return this.categoryRepository.findCategoryByName(name)
+        return this.categoryRepository.findByName(name)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/name/containing/{nameValue}")
     public List<Category> getByNameContaining(@PathVariable("nameValue") String name){
-        return this.categoryRepository.findCategoriesByNameContaining(name);
+        return this.categoryRepository.findByNameContaining(name);
     }
 
     @PostMapping("")

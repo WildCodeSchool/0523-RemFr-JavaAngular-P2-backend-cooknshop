@@ -1,9 +1,8 @@
 package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.Ingredient;
-import com.templateproject.api.entity.Recipe;
 import com.templateproject.api.repository.IngredientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.templateproject.api.utils.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,9 +12,11 @@ import java.util.List;
 @RestController
 public class IngredientController {
 
-    @Autowired
-    private IngredientRepository ingredientRepository;
+    private final IngredientRepository ingredientRepository;
 
+    public IngredientController(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
+    }
 
     @GetMapping("/ingredients")
     public List<Ingredient> getAllIngredient(){
@@ -37,8 +38,9 @@ public class IngredientController {
     public Ingredient update(@PathVariable Long id, @RequestBody Ingredient updatedIngredient) {
         Ingredient ingredientToUpdate = ingredientRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found"));
-        ingredientToUpdate.setName(updatedIngredient.getName());
-        ingredientToUpdate.setImageLink(updatedIngredient.getImageLink());
+
+        BeanUtils.copyNonNullProperties(updatedIngredient, ingredientToUpdate);
+
         return ingredientRepository.save(ingredientToUpdate);
     }
 
