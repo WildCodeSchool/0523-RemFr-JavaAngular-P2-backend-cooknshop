@@ -83,20 +83,20 @@ public class DatabaseSeeder implements CommandLineRunner {
             Long longRandomIngredients = randCategories.nextLong(ubIngredient) + 1;
 
             Set myIngredient = new HashSet();
-            myIngredient.add(ingredientRepository.findById(longRandomIngredients).get());
+            myIngredient.add(ingredientRepository.getReferenceById(longRandomIngredients));
             myRecipe.setRecipeIngredient(myIngredient);
 
 
             Set myCategory = new HashSet();
-            myCategory.add(categoryRepository.findById(longRandomCategories).get());
+            myCategory.add(categoryRepository.getReferenceById(longRandomCategories));
             myRecipe.setRecipeCategories(myCategory);
 
             recipeRepository.save(myRecipe);
 
             //RecipeIngredient
             RecipeIngredient myRecipeIngredient = new RecipeIngredient();
-            myRecipeIngredient.setIngredient(ingredientRepository.findById(longRandomIngredients).get());
-            myRecipeIngredient.setRecipe(recipeRepository.findById(myRecipe.getId()).get());
+            myRecipeIngredient.setIngredient(ingredientRepository.getReferenceById(longRandomIngredients));
+            myRecipeIngredient.setRecipe(recipeRepository.getReferenceById(myRecipe.getId()));
             recipeIngredientRepository.save(myRecipeIngredient);
 
         }
