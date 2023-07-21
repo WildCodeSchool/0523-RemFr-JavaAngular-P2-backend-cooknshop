@@ -1,9 +1,6 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.entity.Category;
-import com.templateproject.api.entity.Recipe;
-import com.templateproject.api.entity.RecipeIngredient;
-import com.templateproject.api.entity.Step;
+import com.templateproject.api.entity.*;
 import com.templateproject.api.repository.*;
 import com.templateproject.api.utils.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -56,6 +53,15 @@ public class RecipeController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return recipe.getStepList();
+    }
+
+    @GetMapping("/{id}/ingredients")
+    public Set<RecipeIngredient> getIngredient(@PathVariable Long id) {
+        Recipe recipe = this.recipeRepository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return recipe.getRecipeIngredient();
     }
 
     @PostMapping("")

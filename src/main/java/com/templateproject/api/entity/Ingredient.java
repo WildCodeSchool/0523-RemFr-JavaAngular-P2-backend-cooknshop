@@ -2,6 +2,7 @@ package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -14,7 +15,7 @@ import java.util.List;
 //@JsonIdentityInfo(
 //        generator = ObjectIdGenerators.PropertyGenerator.class,
 //        property = "id")
-@JsonIgnoreType
+//@JsonIgnoreType
 public class Ingredient {
 
     @Id
@@ -23,9 +24,11 @@ public class Ingredient {
     private String name;
     private String imageLink;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "ingredient")
     private List<IngredientShoppingList> ingredientToShopList = new ArrayList<>();
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "recipeIngredient")
     private List<RecipeIngredient> ingredientList = new ArrayList<>();
 
