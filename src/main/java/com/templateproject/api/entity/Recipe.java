@@ -39,8 +39,8 @@ public class Recipe {
 
     @Enumerated(EnumType.STRING)
     private Budget budget;
-    private Short prepTime;
-    private Short cookTime;
+    private Float prepTime;
+    private Float cookTime;
     private String imageLink;
 
     @ManyToMany
@@ -71,6 +71,17 @@ public class Recipe {
     private User user;
 
     public Recipe() {
+    }
+
+    public Recipe(Long id, String title, Difficulty difficulty, Budget budget, Float prepTime,
+                  Float cookTime, String imageLink) {
+        this.id = id;
+        this.title = title;
+        this.difficulty = difficulty;
+        this.budget = budget;
+        this.prepTime = prepTime;
+        this.cookTime = cookTime;
+        this.imageLink = imageLink;
     }
 
     public Long getId() {
@@ -105,19 +116,19 @@ public class Recipe {
         this.budget = budget;
     }
 
-    public Short getPrepTime() {
+    public Float getPrepTime() {
         return prepTime;
     }
 
-    public void setPrepTime(Short prepTime) {
+    public void setPrepTime(Float prepTime) {
         this.prepTime = prepTime;
     }
 
-    public Short getCookTime() {
+    public Float getCookTime() {
         return cookTime;
     }
 
-    public void setCookTime(Short cookTime) {
+    public void setCookTime(Float cookTime) {
         this.cookTime = cookTime;
     }
 
