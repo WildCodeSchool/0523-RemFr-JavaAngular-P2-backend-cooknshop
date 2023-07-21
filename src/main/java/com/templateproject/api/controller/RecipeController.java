@@ -18,26 +18,28 @@ public class RecipeController {
 
     private final RecipeRepository recipeRepository;
     private final CategoryRepository categoryRepository;
-    private final RecipeCategoryRepository recipeCategoryRepository;
     private final StepRepository stepRepository;
-    private final IngredientRepository ingredientRepository;
+    private final RecipeIngredientRepository recipeIngredientRepository;
 
     public RecipeController(
             RecipeRepository recipeRepository,
             CategoryRepository categoryRepository,
-            RecipeCategoryRepository recipeCategoryRepository,
             StepRepository stepRepository,
-            IngredientRepository ingredientRepository) {
+            RecipeIngredientRepository recipeIngredientRepository) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
-        this.recipeCategoryRepository = recipeCategoryRepository;
         this.stepRepository = stepRepository;
-        this.ingredientRepository = ingredientRepository;
+        this.recipeIngredientRepository = recipeIngredientRepository;
     }
 
     @GetMapping("")
-    public List<Recipe> getAllRecipes() {
+    public List<Recipe> getAll() {
         return this.recipeRepository.findAll();
+    }
+
+    @GetMapping("/summary")
+    public List<Recipe> getAllRecipes() {
+        return this.recipeRepository.findRecipeSummary();
     }
 
     @GetMapping("/{id}")
@@ -69,6 +71,11 @@ public class RecipeController {
 
         Recipe savedRecipe = this.recipeRepository.save(newRecipe);
 
+        for (RecipeIngredient newIngredient : newRecipe.getRecipeIngredient()) {
+            newIngredient.setRecipe(savedRecipe);
+            this.recipeIngredientRepository.save(newIngredient);
+        }
+
         for (int i = 0; i < newRecipe.getStepList().size(); i++) {
             Step newStep = newRecipe.getStepList().get(i);
             newStep.setRecipe(savedRecipe);
@@ -87,13 +94,28 @@ public class RecipeController {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Recipe not found with id " + recipeId));
 
-        List<Step> stepList = recipe.getStepList();
-
+        int i = recipe.getStepList().size() + 1;
         for (Step newStep : newStepList) {
             newStep.setRecipe(recipe);
-            newStep.setNumber((short) ((short) stepList.size() + 1));
+            newStep.setNumber((short) i);
             this.stepRepository.save(newStep);
-            stepList.add(newStep);
+            i++;
+        }
+
+        return recipe;
+    }
+
+    @PostMapping("/{recipeId}/ingredients")
+    public Recipe addIngredient(@PathVariable Long recipeId, @RequestBody List<RecipeIngredient> newIngredientList) {
+
+        Recipe recipe = this.recipeRepository
+                .findById(recipeId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Recipe not found with id " + recipeId));
+
+        for (RecipeIngredient newIngredient : newIngredientList) {
+            newIngredient.setRecipe(recipe);
+            this.recipeIngredientRepository.save(newIngredient);
         }
 
         return recipe;
