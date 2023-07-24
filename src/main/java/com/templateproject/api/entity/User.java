@@ -31,10 +31,10 @@ public class User {
     )
     private Set<Recipe> favoriteRecipes;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ShoppingList shoppingList;
 
     @OneToMany(mappedBy = "user")
