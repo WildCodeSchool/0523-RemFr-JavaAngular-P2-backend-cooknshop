@@ -5,6 +5,7 @@ import java.util.*;
 import com.github.javafaker.Faker;
 import com.templateproject.api.entity.*;
 import com.templateproject.api.repository.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -46,16 +47,6 @@ public class DatabaseSeeder implements CommandLineRunner {
         List<Category> allCategories = new ArrayList<>();
         List<Ingredient> allIngredients = new ArrayList<>();
 
-        this.mockCreateUsers();
-        this.mockCreateUnits();
-        this.mockCreateCategories(allCategories);
-        Random randCategories = new Random();
-        int ubCategories = allCategories.size() - 1;
-
-        this.mockCreateIngredients(allIngredients);
-        Random randIngredient = new Random();
-        int ubIngredient = allCategories.size() - 1;
-
         Recipe quatreQuart = new Recipe();
         Recipe quicheLorraine = new Recipe();
         Recipe pizzaRegina = new Recipe();
@@ -63,16 +54,31 @@ public class DatabaseSeeder implements CommandLineRunner {
         Recipe cupcake = new Recipe();
         Recipe boeufbourguignon = new Recipe();
 
-        //QQ
-        this.mockSetRecipe(quatreQuart,"ma nouvelle recette de quatre-quarts",0.25f,0.75f,"https://i.imgur.com/R0PHxEv.png",1L);
-        quatreQuart.setDifficulty(EASY);
-        quatreQuart.setBudget(CHEAP);
-        this.mockSetCategory(quatreQuart,1L);
+        this.mockCreateUsers();
+        this.mockCreateUnits();
+        this.mockCreateCategories(allCategories);
+        this.mockCreateIngredients(allIngredients);
+
+        this.mockQuatreQuart(quatreQuart);
+        this.mockQuicheLorraine(quicheLorraine);
+        this.mockPizzaRegina(pizzaRegina);
+        this.mockSpaghettiCarbonara(spaghettiCarbonara);
+        this.mockCupCake(cupcake);
+        this.mockBoeufBourguignon(boeufbourguignon);
+
+        this.mockRandomFaker(10, allCategories, allIngredients);
+    }
+
+    public void mockQuatreQuart(Recipe myRecipe) {
+        this.mockSetRecipe(myRecipe,"ma nouvelle recette de quatre-quarts",0.25f,0.75f,"https://i.imgur.com/R0PHxEv.png",1L);
+        myRecipe.setDifficulty(EASY);
+        myRecipe.setBudget(CHEAP);
+        this.mockSetCategory(myRecipe,1L);
         Long qqIngredients[] = { 1L, 2L, 3L, 4L, 5L, 6L };
         Float qqQuantity[] = { 250.0f, 250.0f, 250.0f, 1.0f, 1.0f, 4.0f };
         Long qqUnit[] = { 1L, 1L, 1L, 3L, 3L, 4L};
-        this.mockSetRecipeIngredients(quatreQuart, qqIngredients);
-        recipeRepository.save(quatreQuart);
+        this.mockSetRecipeIngredients(myRecipe, qqIngredients);
+        recipeRepository.save(myRecipe);
         String qqSteps[] = {
                 "Pesez les œufs, et prenez ensuite le même poids en beurre, en sucre et en farine.",
                 "Battez les jaunes d'œufs avec le sucre, et versez-y le beurre fondu, ensuite la farine par petites quantités et enfin les blanc des œufs battus en neige.",
@@ -80,19 +86,20 @@ public class DatabaseSeeder implements CommandLineRunner {
                 "Versez dans une moule à cake beurré, et enfournez pendant 45 min à 160°C (thermostat 5-6) ; bien surveiller la cuisson.",
 
         };
-        this.mockCreateSteps(quatreQuart.getId(), qqSteps);
-        this.mockCreateRecipeIngredients(quatreQuart, qqIngredients, qqQuantity, qqUnit);
+        this.mockCreateSteps(myRecipe.getId(), qqSteps);
+        this.mockCreateRecipeIngredients(myRecipe, qqIngredients, qqQuantity, qqUnit);
+    }
 
-        //QL
-        this.mockSetRecipe(quicheLorraine,"la quiche lorraine par ma grand mere",0.30f,0.40f,"https://i.imgur.com/VTiA0vN.png",1L);
-        quicheLorraine.setDifficulty(HARD);
-        quicheLorraine.setBudget(EXPENSIVE);
-        this.mockSetCategory(quicheLorraine,4L);
+    public void mockQuicheLorraine(Recipe myRecipe) {
+        this.mockSetRecipe(myRecipe,"la quiche lorraine par ma grand mere",0.30f,0.40f,"https://i.imgur.com/VTiA0vN.png",1L);
+        myRecipe.setDifficulty(HARD);
+        myRecipe.setBudget(EXPENSIVE);
+        this.mockSetCategory(myRecipe,4L);
         Long qlIngredients[] = { 3L, 6L, 7L, 8L, 9L, 10L, 11L, 12L, 13L };
         Float qlQuantity[] = {200.0f, 200.0f, 30.0f, 20.0f, 1.0f, 1.0f, 3.0f, 20.0f, 1.0f};
         Long qlUnit[] = { 1L, 1L, 1L, 5L, 4L, 4L, 4L, 5L, 4L};
-        this.mockSetRecipeIngredients(quicheLorraine, qlIngredients);
-        recipeRepository.save(quicheLorraine);
+        this.mockSetRecipeIngredients(myRecipe, qlIngredients);
+        recipeRepository.save(myRecipe);
         String qlSteps[] = {
                 "Préchauffer le four à 180°C (thermostat 6). Etaler la pâte dans un moule",
                 "la piquer à la fourchette. Parsemer de copeaux de beurre.",
@@ -102,19 +109,20 @@ public class DatabaseSeeder implements CommandLineRunner {
                 "???",
                 "Profit",
         };
-        this.mockCreateSteps(quicheLorraine.getId(), qlSteps);
-        this.mockCreateRecipeIngredients(quicheLorraine, qlIngredients, qlQuantity, qlUnit);
+        this.mockCreateSteps(myRecipe.getId(), qlSteps);
+        this.mockCreateRecipeIngredients(myRecipe, qlIngredients, qlQuantity, qlUnit);
+    }
 
-        //PR
-        this.mockSetRecipe(pizzaRegina,"pizza regina maison",0.25f,0.75f,"https://i.imgur.com/hTZIyIK.png",1L);
-        pizzaRegina.setDifficulty(MODERATE);
-        pizzaRegina.setBudget(Recipe.Budget.MODERATE);
-        this.mockSetCategory(pizzaRegina,4L);
+    public void mockPizzaRegina(Recipe myRecipe) {
+        this.mockSetRecipe(myRecipe,"pizza regina maison",0.25f,0.75f,"https://i.imgur.com/hTZIyIK.png",1L);
+        myRecipe.setDifficulty(MODERATE);
+        myRecipe.setBudget(Recipe.Budget.MODERATE);
+        this.mockSetCategory(myRecipe,4L);
         Long prIngredients[] = { 1L, 6L, 2L, 8L, 9L, 4L, 11L, 12L, 7L };
         Float prQuantity[] = {100.0f, 300.0f, 30.0f, 20.0f, 4.0f, 1.0f, 3.0f, 5.0f, 1.0f};
         Long prUnit[] = { 2L, 1L, 3L, 5L, 4L, 4L, 4L, 5L, 4L};
-        this.mockSetRecipeIngredients(pizzaRegina, prIngredients);
-        recipeRepository.save(pizzaRegina);
+        this.mockSetRecipeIngredients(myRecipe, prIngredients);
+        recipeRepository.save(myRecipe);
         String prSteps[] = {
                 "Mettez la levure dans 10 cl d'eau tiède pour l'activer.",
                 "Mélangez la farine, le sel et l'huile dans une grande jatte.",
@@ -126,19 +134,21 @@ public class DatabaseSeeder implements CommandLineRunner {
                 "Garnissez de jambon, de champignons, salez, poivrez, répartissez les tranches de mozzarella, les olives et arrosez du reste d'huile d'olive.",
                 "Glissez au four, 15 à 20 minutes, jusqu'à ce que la pâte soit dorée et le fromage fondu.",
         };
-        this.mockCreateSteps(pizzaRegina.getId(), prSteps);
-        this.mockCreateRecipeIngredients(pizzaRegina, prIngredients, prQuantity, prUnit);
+        this.mockCreateSteps(myRecipe.getId(), prSteps);
+        this.mockCreateRecipeIngredients(myRecipe, prIngredients, prQuantity, prUnit);
 
-        //SC
-        this.mockSetRecipe(spaghettiCarbonara,"spaghetti à la carbonara",0.33f,0.33f,"https://i.imgur.com/7UI4JXf.png",1L);
-        spaghettiCarbonara.setDifficulty(EASY);
-        spaghettiCarbonara.setBudget(CHEAP);
-        this.mockSetCategory(spaghettiCarbonara,4L);
+    }
+
+    public void mockSpaghettiCarbonara(Recipe myRecipe) {
+        this.mockSetRecipe(myRecipe,"spaghetti à la carbonara",0.33f,0.33f,"https://i.imgur.com/7UI4JXf.png",1L);
+        myRecipe.setDifficulty(EASY);
+        myRecipe.setBudget(CHEAP);
+        this.mockSetCategory(myRecipe,4L);
         Long scIngredients[] = { 5L, 6L, 3L, 8L, 9L, 4L, 1L, 12L, 7L };
         Float scQuantity[] = {100.0f, 300.0f, 30.0f, 20.0f, 4.0f, 1.0f, 3.0f, 5.0f, 1.0f};
         Long scUnit[] = { 1L, 1L, 1L, 5L, 4L, 4L, 4L, 1L, 4L};
-        this.mockSetRecipeIngredients(spaghettiCarbonara, scIngredients);
-        recipeRepository.save(spaghettiCarbonara);
+        this.mockSetRecipeIngredients(myRecipe, scIngredients);
+        recipeRepository.save(myRecipe);
         String scSteps[] = {
                 "Portez à ébullition un faitout d'eau salée. Plongez-y les spaghetti et laissez-les cuire environ 12 min, jusqu'à ce qu'ils soient al dente.",
                 "Pendant la cuisson des spaghetti, faites revenir les lardons à sec dans une poêle, jusqu'à ce qu'ils soient bien dorés.",
@@ -147,19 +157,20 @@ public class DatabaseSeeder implements CommandLineRunner {
                 "Egouttez les pâtes. Versez-les dans la sauteuse, mélangez et transvasez dans un plat de service.",
                 "Servez en présentant le parmesan à part.",
         };
-        this.mockCreateSteps(spaghettiCarbonara.getId(), scSteps);
-        this.mockCreateRecipeIngredients(spaghettiCarbonara, scIngredients, scQuantity, scUnit);
+        this.mockCreateSteps(myRecipe.getId(), scSteps);
+        this.mockCreateRecipeIngredients(myRecipe, scIngredients, scQuantity, scUnit);
+    }
 
-        //CC
-        this.mockSetRecipe(cupcake,"cupcake facile inratable",0.33f,0.33f,"https://i.imgur.com/ddhLiaS.png",1L);
-        cupcake.setDifficulty(EASY);
-        cupcake.setBudget(CHEAP);
-        this.mockSetCategory(cupcake,1L);
+    public void mockCupCake(Recipe myRecipe) {
+        this.mockSetRecipe(myRecipe,"cupcake facile inratable",0.33f,0.33f,"https://i.imgur.com/ddhLiaS.png",1L);
+        myRecipe.setDifficulty(EASY);
+        myRecipe.setBudget(CHEAP);
+        this.mockSetCategory(myRecipe,1L);
         Long ccIngredients[] = {5L, 6L, 3L, 8L, 9L, 4L, 1L, 12L, 7L};
         Float ccQuantity[] = {100.0f, 300.0f, 30.0f, 20.0f, 4.0f, 1.0f, 3.0f, 5.0f, 1.0f};
         Long ccUnit[] = { 1L, 1L, 1L, 5L, 4L, 4L, 4L, 1L, 4L};
-        this.mockSetRecipeIngredients(cupcake, scIngredients);
-        recipeRepository.save(cupcake);
+        this.mockSetRecipeIngredients(myRecipe, ccIngredients);
+        recipeRepository.save(myRecipe);
         String ccSteps[] = {
                 "Préparer les gâteaux : mélanger le beurre ramolli et le sucre.",
                 "Battre les œufs en omelette. En mettre la moitié dans le mélange, remuer, puis mettre le reste et remuer à nouveau.",
@@ -170,19 +181,20 @@ public class DatabaseSeeder implements CommandLineRunner {
                 "Sur les petits gâteaux cuits et refroidis, ajouter le glaçage avec une poche à douille (ou un sac congélation dont vous aurez coupé un coin) et décorer de petits bonbons ou de petits grains de sucre coloré.",
                 "Placer au frais pendant 1 heure minimum. Ils se conservent très bien.",
         };
-        this.mockCreateSteps(cupcake.getId(), ccSteps);
-        this.mockCreateRecipeIngredients(cupcake, ccIngredients, ccQuantity, ccUnit);
+        this.mockCreateSteps(myRecipe.getId(), ccSteps);
+        this.mockCreateRecipeIngredients(myRecipe, ccIngredients, ccQuantity, ccUnit);
+    }
 
-        //BB
-        this.mockSetRecipe(boeufbourguignon,"la bourgogne dans votre assiette",0.33f,3.5f,"https://i.imgur.com/SKFaPnv.png",1L);
-        boeufbourguignon.setDifficulty(EASY);
-        boeufbourguignon.setBudget(Recipe.Budget.MODERATE);
-        this.mockSetCategory(boeufbourguignon,1L);
+    public void mockBoeufBourguignon(Recipe myRecipe) {
+        this.mockSetRecipe(myRecipe,"la bourgogne dans votre assiette",0.33f,3.5f,"https://i.imgur.com/SKFaPnv.png",1L);
+        myRecipe.setDifficulty(EASY);
+        myRecipe.setBudget(Recipe.Budget.MODERATE);
+        this.mockSetCategory(myRecipe,1L);
         Long bbIngredients[] = {5L, 6L, 3L, 8L, 9L, 4L, 1L, 12L, 7L};
         Float bbQuantity[] = {100.0f, 300.0f, 30.0f, 20.0f, 4.0f, 1.0f, 3.0f, 5.0f, 1.0f};
         Long bbUnit[] = { 1L, 1L, 1L, 5L, 4L, 4L, 4L, 1L, 4L};
-        this.mockSetRecipeIngredients(boeufbourguignon, scIngredients);
-        recipeRepository.save(boeufbourguignon);
+        this.mockSetRecipeIngredients(myRecipe, bbIngredients);
+        recipeRepository.save(myRecipe);
         String bbSteps[] = {
                 "Tailler le bœuf en cubes de 3 à 4 cm de côte. Peler les oignons sans les écorcher. Peler et couper les carottes en rondelles pas trop fines (2mm au minimum). Peler l'ail et enlever le germe.",
                 "Dans une grande cocotte, faire fondre le beurre. Ajouter les oignons entiers et les lardons. Faire revenir en remuant constamment. Lorsqu'ils sont dorés, les retirer avec un écumoire, et réserver.",
@@ -191,18 +203,25 @@ public class DatabaseSeeder implements CommandLineRunner {
                 "Verser le bouillon (que vous aurez préparé en faisant fondre les 2 cubes de bouillon de viande dans 50 cl d'eau bouillante). Bien gratter les sucs. Remettre les lardons et les [...]",
                 "Au bout de ce temps, ajouter les champignons émincés, et mettre à cuire encore une demi-heure. Retirer le bouquet garni et verser dans un plat Servir avec des pâtes [...]",
         };
-        this.mockCreateSteps(boeufbourguignon.getId(), bbSteps);
-        this.mockCreateRecipeIngredients(boeufbourguignon, bbIngredients, bbQuantity, bbUnit);
+        this.mockCreateSteps(myRecipe.getId(), bbSteps);
+        this.mockCreateRecipeIngredients(myRecipe, bbIngredients, bbQuantity, bbUnit);
+    }
 
-        for (int i = 0; i < 10; i++) {
+    public void mockRandomFaker(int ntimes, List<Category> allCategories, List<Ingredient> allIngredients) {
+        Random randCategories = new Random();
+        int ubCategories = allCategories.size() - 1;
+        Random randIngredient = new Random();
+        int ubIngredient = allIngredients.size() - 1;
+
+        for (int i = 0; i < ntimes; i++) {
             Recipe myRecipe = new Recipe();
             Long longRandomCategories = randCategories.nextLong(ubCategories) + 1;
-            Long longRandomIngredients = randCategories.nextLong(ubIngredient) + 1;
+            Long longRandomIngredients = randIngredient.nextLong(ubIngredient) + 1;
             int width = 300 + i;
             int height = 200 + i;
             //https://loremflickr.com/300/200/dish
             //http://placekitten.com/300/200
-            String myLink = "https://loremflickr.com/" + width + "/" + height + "/dish" ;
+            String myLink = "https://loremflickr.com/" + width + "/" + height + "/restaurantfood" ;
             this.mockSetRecipe(myRecipe,faker.food().dish(),0.30f,0.40f,myLink,2L);
             this.mockSetCategory(myRecipe,longRandomCategories);
             Long mrIngredients[] = { 1L, 2L, 3L, 4L, 5L, 6L, 7L, 8L, 9L };
@@ -220,6 +239,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             this.mockCreateRecipeIngredients(myRecipe, mrIngredients, mrQuantity, mrUnit);
 
         }
+
     }
 
     public void mockCreateRecipeIngredients(Recipe myRecipe, Long[] myIngredients, Float[] myQuantities, Long[] myUnits) {
@@ -283,20 +303,20 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
     public void mockCreateIngredients(List <Ingredient> allIngredients) {
-        mockCreateIngredient(allIngredients,"Farine"); //1
-        mockCreateIngredient(allIngredients,"Sucre"); //2
-        mockCreateIngredient(allIngredients,"Beurre"); //3
-        mockCreateIngredient(allIngredients,"Levure Chimique"); //4
-        mockCreateIngredient(allIngredients,"Sucre Vanillé"); //5
-        mockCreateIngredient(allIngredients,"Oeufs"); //6
+        mockCreateIngredient(allIngredients,"Farine");
+        mockCreateIngredient(allIngredients,"Sucre");
+        mockCreateIngredient(allIngredients,"Beurre");
+        mockCreateIngredient(allIngredients,"Levure Chimique");
+        mockCreateIngredient(allIngredients,"Sucre Vanillé");
+        mockCreateIngredient(allIngredients,"Oeufs");
 
-        mockCreateIngredient(allIngredients,"Pate Brisé"); //7
-        mockCreateIngredient(allIngredients,"Lardons"); //8
-        mockCreateIngredient(allIngredients,"Creme Fraiche"); //9
-        mockCreateIngredient(allIngredients,"Sel"); //10
-        mockCreateIngredient(allIngredients,"Poivre"); //11
-        mockCreateIngredient(allIngredients,"Lait"); //12
-        mockCreateIngredient(allIngredients,"Muscade"); //13
+        mockCreateIngredient(allIngredients,"Pate Brisé");
+        mockCreateIngredient(allIngredients,"Lardons");
+        mockCreateIngredient(allIngredients,"Creme Fraiche");
+        mockCreateIngredient(allIngredients,"Sel");
+        mockCreateIngredient(allIngredients,"Poivre");
+        mockCreateIngredient(allIngredients,"Lait");
+        mockCreateIngredient(allIngredients,"Muscade");
 
         for (int i = 0; i < 10; i++) {
             mockCreateIngredient(allIngredients,faker.food().ingredient());
@@ -341,12 +361,12 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     public void mockCreateUnits() {
         List<Unit> allUnits = new ArrayList<>();
-        mockCreateUnit(allUnits, "grammes"); //1
-        mockCreateUnit(allUnits, "litres"); //2
-        mockCreateUnit(allUnits, "sachets"); //3
-        mockCreateUnit(allUnits, "unités"); //4
+        mockCreateUnit(allUnits, "grammes");
+        mockCreateUnit(allUnits, "litres");
+        mockCreateUnit(allUnits, "sachets");
+        mockCreateUnit(allUnits, "unités");
 
-        mockCreateUnit(allUnits, "centilitres"); //5
+        mockCreateUnit(allUnits, "centilitres");
         unitRepository.saveAll(allUnits);
     }
 
