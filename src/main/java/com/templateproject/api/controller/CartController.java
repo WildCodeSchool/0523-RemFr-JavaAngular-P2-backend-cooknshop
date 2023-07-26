@@ -27,6 +27,15 @@ public class CartController {
     }
 
     //Ajouter création cart quand user fini
+    @GetMapping("/{cartID}")
+    public Cart showIndividualCart(
+            @PathVariable("cartID") Long cartId
+    ) {
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Cart not found with id " + cartId));
+        return cart;
+    }
 
     @PostMapping("/{cartId}/addRecipe/{id}")
     public Cart addRecipeToCart(
