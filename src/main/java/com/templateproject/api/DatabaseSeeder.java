@@ -1,5 +1,5 @@
 package com.templateproject.api;
-
+/*
 import java.util.*;
 
 import com.github.javafaker.Faker;
@@ -371,3 +371,4 @@ public class DatabaseSeeder implements CommandLineRunner {
     }
 
 }
+*/

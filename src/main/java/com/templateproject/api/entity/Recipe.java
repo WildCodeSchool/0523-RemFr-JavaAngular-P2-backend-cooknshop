@@ -1,6 +1,7 @@
 package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -54,6 +55,7 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe")
     private Set<Comment> recipeComment = new HashSet<>();
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private Set<RecipeCart> recipeCart = new HashSet<>();
 
