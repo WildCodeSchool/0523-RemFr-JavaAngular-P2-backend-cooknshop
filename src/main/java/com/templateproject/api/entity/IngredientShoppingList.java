@@ -3,6 +3,7 @@ package com.templateproject.api.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @JsonIdentityInfo(
@@ -15,6 +16,10 @@ public class IngredientShoppingList {
     private Long id;
 
     private Float quantity;
+
+    private String comment;
+
+    private Boolean purchased;
 
     @ManyToOne
     @JoinColumn(name = "ingredient_id")
@@ -47,12 +52,20 @@ public class IngredientShoppingList {
         this.quantity = quantity;
     }
 
-    public Unit getUnit() {
-        return unit;
+    public String getComment() {
+        return comment;
     }
 
-    public void setUnit(Unit unit) {
-        this.unit = unit;
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Boolean getPurchased() {
+        return purchased;
+    }
+
+    public void setPurchased(Boolean purchased) {
+        this.purchased = purchased;
     }
 
     public Ingredient getIngredient() {
@@ -63,11 +76,19 @@ public class IngredientShoppingList {
         this.ingredient = ingredient;
     }
 
-    public ShoppingList getShoppingList() {
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public ShoppingList getShoppingListIngredient() {
         return shoppingListIngredient;
     }
 
-    public void setShoppingList(ShoppingList shoppingList) {
-        this.shoppingListIngredient = shoppingList;
+    public void setShoppingListIngredient(ShoppingList shoppingListIngredient) {
+        this.shoppingListIngredient = shoppingListIngredient;
     }
 }

@@ -1,6 +1,7 @@
 package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -25,6 +26,7 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "recipeCart")
     private List<RecipeCart> recipeList = new ArrayList<>();
 

@@ -46,7 +46,7 @@ public class UserController {
                         HttpStatus.NOT_FOUND, "User not found with email " + emailValue));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public User getUser(@RequestBody User user) {
         Optional<User> optionalUser = this.userRepository.findByEmail(user.getEmail());
         if (optionalUser.isPresent()) {
