@@ -23,6 +23,8 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final StepRepository stepRepository;
     private final UnitRepository unitRepository;
     private final UserRepository userRepository;
+    private final CartRepository cartRepository;
+    private final RecipeCartRepository recipeCartRepository;
     public DatabaseSeeder(
             RecipeRepository recipeRepository,
             CategoryRepository categoryRepository,
@@ -30,7 +32,9 @@ public class DatabaseSeeder implements CommandLineRunner {
             RecipeIngredientRepository recipeIngredientRepository,
             StepRepository stepRepository,
             UnitRepository unitRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            CartRepository cartRepository,
+            RecipeCartRepository recipeCartRepository
     ){
         this.faker = new Faker();
         this.recipeRepository = recipeRepository;
@@ -40,6 +44,8 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.stepRepository = stepRepository;
         this.unitRepository = unitRepository;
         this.userRepository = userRepository;
+        this.cartRepository = cartRepository;
+        this.recipeCartRepository = recipeCartRepository;
     }
 
     @Override
@@ -67,6 +73,47 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.mockBoeufBourguignon(boeufbourguignon);
 
         this.mockRandomFaker(10, allCategories, allIngredients);
+
+
+        //CREATE NEW CART
+        Cart firstCart = new Cart();
+        firstCart.setId(1L);
+        firstCart.setUser(userRepository.getReferenceById(1L));
+        cartRepository.save(firstCart);
+
+
+        //CREATE 3 RECIPE CARTS ITEMS
+        RecipeCart rcFirstItem = new RecipeCart();
+        rcFirstItem.setRecipeCart(firstCart);
+        rcFirstItem.setRecipe(quatreQuart);
+        rcFirstItem.setNbPerson(5);
+        recipeCartRepository.save(rcFirstItem);
+
+        RecipeCart rcSecondItem = new RecipeCart();
+        rcSecondItem.setRecipeCart(firstCart);
+        rcSecondItem.setRecipe(pizzaRegina);
+        rcSecondItem.setNbPerson(4);
+        recipeCartRepository.save(rcSecondItem);
+
+        RecipeCart rcThirdItem = new RecipeCart();
+        rcThirdItem.setRecipeCart(firstCart);
+        rcThirdItem.setRecipe(boeufbourguignon);
+        rcThirdItem.setNbPerson(2);
+        recipeCartRepository.save(rcThirdItem);
+
+        //ADD ALL RECIPE CART ITEMS TO A LIST
+        List<RecipeCart> rcFirstUserCart = new ArrayList<>();
+        rcFirstUserCart.add(rcFirstItem);
+        rcFirstUserCart.add(rcSecondItem);
+        rcFirstUserCart.add(rcThirdItem);
+
+        //SET LIST TO CART AND SAVE
+        firstCart.setRecipeList(rcFirstUserCart);
+        cartRepository.save(firstCart);
+
+
+
+
     }
 
     public void mockQuatreQuart(Recipe myRecipe) {
