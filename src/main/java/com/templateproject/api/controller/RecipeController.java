@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -35,6 +36,22 @@ public class RecipeController {
     @GetMapping("")
     public List<Recipe> getAll() {
         return this.recipeRepository.findAll();
+    }
+
+    @GetMapping("/title/containing/{query}")
+    public List<Recipe>  queryRecipeFromTitle(@PathVariable String query) {
+        return this.recipeRepository.findByTitleContaining(query);
+
+    }
+    @GetMapping("/category/containing/{query}")
+    public List<Recipe> queryRecipeFromCategory(@PathVariable String query) {
+        return this.recipeRepository.findSearchRecipeCategories(query);
+    }
+
+
+    @GetMapping("/both/containing/{query}")
+    public List<Recipe> queryRecipeFromBoth(@PathVariable String query) {
+        return this.recipeRepository.findSearchRecipeCategoriesOrTitle(query);
     }
 
     @GetMapping("/summary")
