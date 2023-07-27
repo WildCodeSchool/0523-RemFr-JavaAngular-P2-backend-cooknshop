@@ -1,6 +1,7 @@
 package com.templateproject.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -40,6 +41,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Comment> comment = new ArrayList<>() ;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "user")
     private List<Recipe> recipeList = new ArrayList<>();
 

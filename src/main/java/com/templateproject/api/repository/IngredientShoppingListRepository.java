@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Repository
 public interface IngredientShoppingListRepository extends JpaRepository<IngredientShoppingList, Long> {
 
+    @Transactional
     @Modifying
     @Query( value =
             "insert into ingredient_shopping_list(quantity, ingredient_id, shopping_list_id, unit_id)\n" +

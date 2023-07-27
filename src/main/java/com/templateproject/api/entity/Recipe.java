@@ -44,6 +44,8 @@ public class Recipe {
     private Float cookTime;
     private String imageLink;
 
+    private Integer nbPerson;
+
     @ManyToMany
     @JoinTable(
             name = "recipe_category",
@@ -66,7 +68,7 @@ public class Recipe {
     private List<Step> stepList = new ArrayList<>();
 
     @ManyToMany(mappedBy = "favoriteRecipes")
-    Set<User> usersWhoLikeRecipe  = new HashSet<>();
+    private Set<User> usersWhoLikeRecipe  = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -142,12 +144,44 @@ public class Recipe {
         this.imageLink = imageLink;
     }
 
+    public Integer getNbPerson() {
+        return nbPerson;
+    }
+
+    public void setNbPerson(Integer nbPerson) {
+        this.nbPerson = nbPerson;
+    }
+
     public Set<Category> getRecipeCategories() {
         return recipeCategories;
     }
 
     public void setRecipeCategories(Set<Category> recipeCategories) {
         this.recipeCategories = recipeCategories;
+    }
+
+    public Set<Comment> getRecipeComment() {
+        return recipeComment;
+    }
+
+    public void setRecipeComment(Set<Comment> recipeComment) {
+        this.recipeComment = recipeComment;
+    }
+
+    public Set<RecipeCart> getRecipeCart() {
+        return recipeCart;
+    }
+
+    public void setRecipeCart(Set<RecipeCart> recipeCart) {
+        this.recipeCart = recipeCart;
+    }
+
+    public Set<RecipeIngredient> getRecipeIngredient() {
+        return recipeIngredient;
+    }
+
+    public void setRecipeIngredient(Set<RecipeIngredient> recipeIngredient) {
+        this.recipeIngredient = recipeIngredient;
     }
 
     public List<Step> getStepList() {
@@ -166,35 +200,11 @@ public class Recipe {
         this.usersWhoLikeRecipe = usersWhoLikeRecipe;
     }
 
-    public Set<RecipeIngredient> getRecipeIngredient() {
-        return recipeIngredient;
-    }
-
-    public void setRecipeIngredient(Set<RecipeIngredient> recipeIngredient) {
-        this.recipeIngredient = recipeIngredient;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Set<Comment> getRecipeComment() {
-        return recipeComment;
-    }
-
-    public void setRecipeComment(Set<Comment> recipeComment) {
-        this.recipeComment = recipeComment;
-    }
-
-    public Set<RecipeCart> getRecipeCart() {
-        return recipeCart;
-    }
-
-    public void setRecipeCart(Set<RecipeCart> recipeCart) {
-        this.recipeCart = recipeCart;
     }
 }

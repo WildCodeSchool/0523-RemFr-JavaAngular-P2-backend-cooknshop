@@ -6,16 +6,15 @@ import com.templateproject.api.repository.IngredientShoppingListRepository;
 import com.templateproject.api.repository.ShoppingListRepository;
 import com.templateproject.api.repository.UserRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/shoppinglist")
+@RequestMapping("/shoppinglists")
 public class ShoppingListController {
 
     public final ShoppingListRepository shoppingListRepository;
@@ -30,23 +29,39 @@ public class ShoppingListController {
         this.userRepository = userRepository;
     }
 
-    // créer la liste de course à partir des recettes du panier
-    // et avant effacer toutes les lignes d'un utilisateur dans IngredientShoppingList
+    @GetMapping("/{id}")
+    public List<IngredientShoppingList> getByShoppingListId(@PathVariable Long id) {
+        return this.shoppingListRepository.findById(id).get().getIngredientToShopList();
+    }
+
     @PostMapping("/{userId}")
     public boolean create(@PathVariable Long userId) {
+
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()){
-            for (IngredientShoppingList ingredient :optionalUser.get().getShoppingList().getIngredientToShopList()) {
-                System.out.println(ingredient.getId());
-                this.ingredientShoppingListRepository.deleteById(ingredient.getId());
-            };
+            this.ingredientShoppingListRepository.deleteAll(
+                    optionalUser.get().getShoppingList().getIngredientToShopList());
             this.ingredientShoppingListRepository.insertIngredient(optionalUser.get().getId());
             return true;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + userId);
     }
-    // effacer une ligne dans IngredientShoppingList
-    // modifier la quantité sur une ligne dans IngredientShoppingList
-    // ajouter un commentaire sur une ligne dans IngredientShoppingList
-    // effacer toutes les lignes d'un utilisateur dans IngredientShoppingList
+
+    //TODO mettre à jour les valeurs des champs après modif dans IngredientShoppingList
+
+    @DeleteMapping("/ingredients/{id}")
+    public void delete(@PathVariable Long id) {
+        Optional<IngredientShoppingList> optionalIngredient = ingredientShoppingListRepository.findById(id);
+        if (optionalIngredient.isPresent()){
+            this.shoppingListRepository.deleteById(id);
+        }
+    }
+    @DeleteMapping("/{userId}")
+    public void deleteAll(@PathVariable Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            this.ingredientShoppingListRepository.deleteAll(
+                    optionalUser.get().getShoppingList().getIngredientToShopList());
+        }
+    }
 }
