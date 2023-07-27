@@ -26,7 +26,7 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //TODO verify database relation
     @OneToMany(mappedBy = "recipeCart")
     private List<RecipeCart> recipeList = new ArrayList<>();
 
