@@ -29,9 +29,15 @@ public class ShoppingListController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/{id}")
-    public List<IngredientShoppingList> getByShoppingListId(@PathVariable Long id) {
-        return this.shoppingListRepository.findById(id).get().getIngredientToShopList();
+    @GetMapping("/{userId}")
+    public List<IngredientShoppingList> getByShoppingListId(@PathVariable Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()){
+            return this.shoppingListRepository
+                    .findById(optionalUser.get().getShoppingList().getId())
+                    .get().getIngredientToShopList();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + userId);
     }
 
     @PostMapping("/{userId}")
@@ -53,7 +59,7 @@ public class ShoppingListController {
     public void delete(@PathVariable Long id) {
         Optional<IngredientShoppingList> optionalIngredient = ingredientShoppingListRepository.findById(id);
         if (optionalIngredient.isPresent()){
-            this.shoppingListRepository.deleteById(id);
+            this.ingredientShoppingListRepository.deleteById(id);
         }
     }
     @DeleteMapping("/{userId}")
