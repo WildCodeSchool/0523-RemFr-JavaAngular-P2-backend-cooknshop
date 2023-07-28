@@ -1,16 +1,16 @@
 package com.templateproject.api.controller;
 
-import com.templateproject.api.entity.Cart;
-import com.templateproject.api.entity.Recipe;
-import com.templateproject.api.entity.RecipeCart;
+import com.templateproject.api.entity.*;
 import com.templateproject.api.repository.CartRepository;
 import com.templateproject.api.repository.RecipeCartRepository;
 import com.templateproject.api.repository.RecipeRepository;
+import com.templateproject.api.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cart")
@@ -19,22 +19,25 @@ public class CartController {
     public final CartRepository cartRepository;
     public final RecipeCartRepository recipeCartRepository;
     public final RecipeRepository recipeRepository;
+    public final UserRepository userRepository;
 
-    public CartController(CartRepository cartRepository, RecipeCartRepository recipeCartRepository, RecipeRepository recipeRepository) {
+    public CartController(CartRepository cartRepository, RecipeCartRepository recipeCartRepository,
+                          RecipeRepository recipeRepository, UserRepository userRepository) {
         this.cartRepository = cartRepository;
         this.recipeCartRepository = recipeCartRepository;
         this.recipeRepository = recipeRepository;
+        this.userRepository = userRepository;
     }
 
     //Ajouter création cart quand user fini
     @GetMapping("/{cartID}")
-    public Cart showIndividualCart(
+    public List<RecipeCart> showIndividualCart(
             @PathVariable("cartID") Long cartId
     ) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Cart not found with id " + cartId));
-        return cart;
+        return cart.getRecipeList();
     }
 
     @PostMapping("/{cartId}/addRecipe/{id}")

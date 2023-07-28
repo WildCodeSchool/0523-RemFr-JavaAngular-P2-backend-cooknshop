@@ -1,5 +1,4 @@
 package com.templateproject.api;
-
 import java.util.*;
 
 import com.github.javafaker.Faker;
@@ -120,6 +119,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.mockSetRecipe(myRecipe,"ma nouvelle recette de quatre-quarts",0.25f,0.75f,"https://i.imgur.com/R0PHxEv.png",1L);
         myRecipe.setDifficulty(EASY);
         myRecipe.setBudget(CHEAP);
+        myRecipe.setNbPerson(1);
         this.mockSetCategory(myRecipe,1L);
         Long qqIngredients[] = { 1L, 2L, 3L, 4L, 5L, 6L };
         Float qqQuantity[] = { 250.0f, 250.0f, 250.0f, 1.0f, 1.0f, 4.0f };
@@ -141,6 +141,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.mockSetRecipe(myRecipe,"la quiche lorraine par ma grand mere",0.30f,0.40f,"https://i.imgur.com/VTiA0vN.png",1L);
         myRecipe.setDifficulty(HARD);
         myRecipe.setBudget(EXPENSIVE);
+        myRecipe.setNbPerson(1);
         this.mockSetCategory(myRecipe,4L);
         Long qlIngredients[] = { 3L, 6L, 7L, 8L, 9L, 10L, 11L, 12L, 13L };
         Float qlQuantity[] = {200.0f, 200.0f, 30.0f, 20.0f, 1.0f, 1.0f, 3.0f, 20.0f, 1.0f};
@@ -164,6 +165,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.mockSetRecipe(myRecipe,"pizza regina maison",0.25f,0.75f,"https://i.imgur.com/hTZIyIK.png",1L);
         myRecipe.setDifficulty(MODERATE);
         myRecipe.setBudget(Recipe.Budget.MODERATE);
+        myRecipe.setNbPerson(1);
         this.mockSetCategory(myRecipe,4L);
         Long prIngredients[] = { 1L, 6L, 2L, 8L, 9L, 4L, 11L, 12L, 7L };
         Float prQuantity[] = {100.0f, 300.0f, 30.0f, 20.0f, 4.0f, 1.0f, 3.0f, 5.0f, 1.0f};
@@ -190,6 +192,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.mockSetRecipe(myRecipe,"spaghetti à la carbonara",0.33f,0.33f,"https://i.imgur.com/7UI4JXf.png",1L);
         myRecipe.setDifficulty(EASY);
         myRecipe.setBudget(CHEAP);
+        myRecipe.setNbPerson(1);
         this.mockSetCategory(myRecipe,4L);
         Long scIngredients[] = { 5L, 6L, 3L, 8L, 9L, 4L, 1L, 12L, 7L };
         Float scQuantity[] = {100.0f, 300.0f, 30.0f, 20.0f, 4.0f, 1.0f, 3.0f, 5.0f, 1.0f};
@@ -212,6 +215,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.mockSetRecipe(myRecipe,"cupcake facile inratable",0.33f,0.33f,"https://i.imgur.com/ddhLiaS.png",1L);
         myRecipe.setDifficulty(EASY);
         myRecipe.setBudget(CHEAP);
+        myRecipe.setNbPerson(1);
         this.mockSetCategory(myRecipe,1L);
         Long ccIngredients[] = {5L, 6L, 3L, 8L, 9L, 4L, 1L, 12L, 7L};
         Float ccQuantity[] = {100.0f, 300.0f, 30.0f, 20.0f, 4.0f, 1.0f, 3.0f, 5.0f, 1.0f};
@@ -236,6 +240,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         this.mockSetRecipe(myRecipe,"la bourgogne dans votre assiette",0.33f,3.5f,"https://i.imgur.com/SKFaPnv.png",1L);
         myRecipe.setDifficulty(EASY);
         myRecipe.setBudget(Recipe.Budget.MODERATE);
+        myRecipe.setNbPerson(1);
         this.mockSetCategory(myRecipe,1L);
         Long bbIngredients[] = {5L, 6L, 3L, 8L, 9L, 4L, 1L, 12L, 7L};
         Float bbQuantity[] = {100.0f, 300.0f, 30.0f, 20.0f, 4.0f, 1.0f, 3.0f, 5.0f, 1.0f};
@@ -262,6 +267,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         for (int i = 0; i < ntimes; i++) {
             Recipe myRecipe = new Recipe();
+            myRecipe.setNbPerson(1);
             Long longRandomCategories = randCategories.nextLong(ubCategories) + 1;
             Long longRandomIngredients = randIngredient.nextLong(ubIngredient) + 1;
             int width = 300 + i;
@@ -393,8 +399,8 @@ public class DatabaseSeeder implements CommandLineRunner {
         userRepository.save(graham);
 
         User eric = new User();
-        graham.setPseudo("EricDupond");
-        graham.setEmail("eric.dupond@gmail.com");
+        eric.setPseudo("EricDupond");
+        eric.setEmail("eric.dupond@gmail.com");
         userRepository.save(eric);
     }
 
