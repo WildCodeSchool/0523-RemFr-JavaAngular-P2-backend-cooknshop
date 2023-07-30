@@ -1,5 +1,4 @@
 package com.templateproject.api;
-
 import java.util.*;
 
 import com.github.javafaker.Faker;
