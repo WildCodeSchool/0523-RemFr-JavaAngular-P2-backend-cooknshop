@@ -1,10 +1,12 @@
 package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.IngredientShoppingList;
+import com.templateproject.api.entity.Unit;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.IngredientShoppingListRepository;
 import com.templateproject.api.repository.ShoppingListRepository;
 import com.templateproject.api.repository.UserRepository;
+import com.templateproject.api.utils.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -54,6 +56,17 @@ public class ShoppingListController {
     }
 
     //TODO mettre à jour les valeurs des champs après modif dans IngredientShoppingList
+
+    @PutMapping("/ingredients/{id}")
+    public IngredientShoppingList update(@PathVariable Long id, @RequestBody IngredientShoppingList ingredientUpdate) {
+        IngredientShoppingList ingredient = this.ingredientShoppingListRepository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        BeanUtils.copyNonNullProperties(ingredientUpdate, ingredient);
+
+        return this.ingredientShoppingListRepository.save(ingredient);
+    }
 
     @DeleteMapping("/ingredients/{id}")
     public void delete(@PathVariable Long id) {
