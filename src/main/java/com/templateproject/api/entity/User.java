@@ -24,13 +24,23 @@ public class User {
     private String email;
     private String password;
 
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "favorite_recipe",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id")
     )
-    private Set<Recipe> favoriteRecipes;
+    private Set<Recipe> favoriteRecipes = new HashSet<>();
+
+
+    public Set<Recipe> getFavoriteRecipes() {
+        return favoriteRecipes;
+    }
+
+    public void setFavoriteRecipes(Set<Recipe> favoriteRecipes) {
+        this.favoriteRecipes = favoriteRecipes;
+    }
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Cart cart;
@@ -80,13 +90,7 @@ public class User {
         this.password = password;
     }
 
-    public Set<Recipe> getFavoriteRecipes() {
-        return favoriteRecipes;
-    }
 
-    public void setFavoriteRecipes(Set<Recipe> favoriteRecipes) {
-        this.favoriteRecipes = favoriteRecipes;
-    }
 
     public List<Recipe> getRecipeList() {
         return recipeList;

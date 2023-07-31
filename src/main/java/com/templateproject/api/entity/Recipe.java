@@ -67,6 +67,7 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Step> stepList = new ArrayList<>();
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToMany(mappedBy = "favoriteRecipes")
     private Set<User> usersWhoLikeRecipe  = new HashSet<>();
 

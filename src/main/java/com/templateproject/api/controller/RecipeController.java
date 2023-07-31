@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @RestController
@@ -21,16 +18,19 @@ public class RecipeController {
     private final CategoryRepository categoryRepository;
     private final StepRepository stepRepository;
     private final RecipeIngredientRepository recipeIngredientRepository;
-
+    private final UserRepository userRepository;
     public RecipeController(
             RecipeRepository recipeRepository,
             CategoryRepository categoryRepository,
             StepRepository stepRepository,
-            RecipeIngredientRepository recipeIngredientRepository) {
+            RecipeIngredientRepository recipeIngredientRepository,
+            UserRepository userRepository
+    ) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
         this.stepRepository = stepRepository;
         this.recipeIngredientRepository = recipeIngredientRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("")
@@ -136,6 +136,24 @@ public class RecipeController {
         }
 
         return recipe;
+    }
+    @GetMapping("{recipeId}/user/{userId}")
+    public Set<User> addRecipeToFavorites(
+            @PathVariable Long recipeId,
+            @PathVariable Long userId
+    ) {
+        Recipe recipe = this.recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Recipe not found with id " + recipeId));
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User not found with id " + userId));
+        
+        Set<Recipe> favoriteRecipes = user.getFavoriteRecipes();
+        favoriteRecipes.add(recipe);
+        user.setFavoriteRecipes(favoriteRecipes);
+        this.userRepository.save(user);
+        return recipe.getUsersWhoLikeRecipe();
     }
 
     @PostMapping("/{recipeId}/categories/{categoryId}/recipecategories")
