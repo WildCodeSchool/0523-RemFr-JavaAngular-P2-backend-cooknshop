@@ -1,6 +1,7 @@
 package com.templateproject.api.controller;
 
 import com.templateproject.api.entity.IngredientShoppingList;
+import com.templateproject.api.entity.ShoppingList;
 import com.templateproject.api.entity.Unit;
 import com.templateproject.api.entity.User;
 import com.templateproject.api.repository.IngredientShoppingListRepository;
@@ -42,6 +43,24 @@ public class ShoppingListController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with id " + userId);
     }
 
+    @GetMapping("/{shoppingListId}/ingredients")
+    public List<IngredientShoppingList> getIngredientShoppingListById(@PathVariable Long shoppingListId) {
+        Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(shoppingListId);
+        if (optionalShoppingList.isPresent()){
+            return optionalShoppingList.get().getIngredientToShopList();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ShoppingList not found with id " + shoppingListId);
+    }
+
+    @GetMapping("/{shoppingListId}/shared")
+    public ShoppingList getShoppingListById(@PathVariable Long shoppingListId) {
+        Optional<ShoppingList> optionalShoppingList = shoppingListRepository.findById(shoppingListId);
+        if (optionalShoppingList.isPresent()){
+            return optionalShoppingList.get();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "ShoppingList not found with id " + shoppingListId);
+    }
+
     @PostMapping("/{userId}")
     public boolean create(@PathVariable Long userId) {
 
@@ -66,6 +85,17 @@ public class ShoppingListController {
         BeanUtils.copyNonNullProperties(ingredientUpdate, ingredient);
 
         return this.ingredientShoppingListRepository.save(ingredient);
+    }
+
+    @PutMapping("/shared/{id}")
+    public ShoppingList update(@PathVariable Long id, @RequestBody ShoppingList shopListUpdate) {
+        ShoppingList shoppingList = this.shoppingListRepository
+                .findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        BeanUtils.copyNonNullProperties(shopListUpdate, shoppingList);
+
+        return this.shoppingListRepository.save(shoppingList);
     }
 
     @DeleteMapping("/ingredients/{id}")
