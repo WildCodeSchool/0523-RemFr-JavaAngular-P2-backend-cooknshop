@@ -152,6 +152,7 @@ public class RecipeController {
                         HttpStatus.NOT_FOUND, "Category not found with id " + categoryId));
 
         Set<Category> categories = recipe.getRecipeCategories();
+        categories.clear();
         categories.add(category);
 
         return this.recipeRepository.save(recipe);
